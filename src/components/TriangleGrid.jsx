@@ -28,10 +28,8 @@ export default function TriangleGrid({ runeMap, highlightedIds, hoveredIds, onTr
 
   return (
     <svg
-      width={W}
-      height={H}
       viewBox={`0 0 ${W} ${H}`}
-      style={{ display: 'block', margin: '0 auto' }}
+      style={{ display: 'block', width: '100%', height: 'auto' }}
     >
       {triangles.map(({ id, points, centroid }) => {
         const isHovered = hoveredIds?.has(id) ?? false;
