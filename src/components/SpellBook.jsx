@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import RuneBadges from './RuneBadges';
+import SpellStats from './SpellStats';
 import { spells } from '../data/spells';
 
 const TYPE_COLORS = {
@@ -157,20 +158,7 @@ export default function SpellBook() {
                   {spell.description}
                 </div>
               )}
-              <div style={{ display: 'flex', gap: 10, marginTop: 5, flexWrap: 'wrap' }}>
-                {spell.puissance !== 'N/A' && (
-                  <span style={{ color: '#777', fontSize: 10 }}>⚡ {spell.puissance}</span>
-                )}
-                {spell.portee && (
-                  <span style={{ color: '#777', fontSize: 10 }}>📏 {spell.portee}</span>
-                )}
-                {spell.duree !== 'N/A' && (
-                  <span style={{ color: '#777', fontSize: 10 }}>⏱ {spell.duree}</span>
-                )}
-                {spell.region && (
-                  <span style={{ color: '#777', fontSize: 10 }}>🎯 {spell.region}</span>
-                )}
-              </div>
+              <SpellStats spell={spell} size="sm" />
               {spell.amelioration && (
                 <div style={{ marginTop: 4, fontSize: 10, color: '#f0c040' }}>★ Amélioration</div>
               )}

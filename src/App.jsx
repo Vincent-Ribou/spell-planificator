@@ -7,6 +7,8 @@ import TriangleGrid from './components/TriangleGrid';
 import RuneSelector from './components/RuneSelector';
 import SpellList from './components/SpellList';
 import SpellBook from './components/SpellBook';
+import StatsModal from './components/StatsModal';
+import { useStats } from './context/StatsContext';
 
 // Stable precomputations — built once, never change
 const adjMap = buildAdjacencyMap();
@@ -30,6 +32,8 @@ export default function App() {
   const [hoveredIds, setHoveredIds] = useState(null);
   const [copyLabel, setCopyLabel] = useState('Copier le lien');
   const [activeTab, setActiveTab] = useState('planner'); // 'planner' | 'grimoire'
+  const [showStats, setShowStats] = useState(false);
+  const { stats } = useStats();
   const debounceRef = useRef(null);
   const isMobile = useIsMobile();
 
@@ -80,6 +84,15 @@ export default function App() {
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
         <h1 style={{ fontSize: '1.2em', margin: 0, color: '#eee' }}>Planificateur de Sorts</h1>
         <div className="no-print" style={{ display: 'flex', gap: 6 }}>
+          <button
+            onClick={() => setShowStats(true)}
+            style={{ fontSize: 11, padding: '4px 10px', background: '#2a3a2e', border: '1px solid #4a6a4e', borderRadius: 5, color: '#6dd9a0', cursor: 'pointer', position: 'relative' }}
+          >
+            Statistiques
+            {Object.values(stats).some(v => v > 0) && (
+              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: '#6dd9a0', borderRadius: '50%' }} />
+            )}
+          </button>
           <button
             onClick={handleCopyLink}
             style={{ fontSize: 11, padding: '4px 10px', background: '#2a2a3e', border: '1px solid #555', borderRadius: 5, color: '#ccc', cursor: 'pointer' }}
@@ -183,6 +196,7 @@ export default function App() {
           onClear={handleRuneClear}
           onClose={() => setSelectorState(null)}
         />
+        {showStats && <StatsModal onClose={() => setShowStats(false)} />}
       </div>
     );
   }
@@ -215,6 +229,7 @@ export default function App() {
         onClear={handleRuneClear}
         onClose={() => setSelectorState(null)}
       />
+      {showStats && <StatsModal onClose={() => setShowStats(false)} />}
     </div>
   );
 }

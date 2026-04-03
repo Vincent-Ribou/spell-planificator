@@ -1,4 +1,5 @@
 import RuneBadges from './RuneBadges';
+import SpellStats from './SpellStats';
 
 const TYPE_COLORS = {
   Divin:   '#f0c040',
@@ -81,20 +82,7 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
                 {spell.description}
               </div>
             )}
-            <div style={{ display: 'flex', gap: 12, marginTop: 6, flexWrap: 'wrap' }}>
-              {spell.puissance !== 'N/A' && (
-                <span style={{ color: '#888', fontSize: 11 }}>⚡ {spell.puissance}</span>
-              )}
-              {spell.portee && (
-                <span style={{ color: '#888', fontSize: 11 }}>📏 {spell.portee}</span>
-              )}
-              {spell.duree !== 'N/A' && (
-                <span style={{ color: '#888', fontSize: 11 }}>⏱ {spell.duree}</span>
-              )}
-              {spell.region && (
-                <span style={{ color: '#888', fontSize: 11 }}>🎯 {spell.region}</span>
-              )}
-            </div>
+            <SpellStats spell={spell} />
             {spell.amelioration && (
               <div style={{ marginTop: 5, fontSize: 11, color: '#f0c040' }}>★ Amélioration</div>
             )}
