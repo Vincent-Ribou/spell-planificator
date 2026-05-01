@@ -25,7 +25,7 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
   }
 
   return (
-    <div style={{ padding: '12px 0' }}>
+    <div className="print-spells" style={{ padding: '12px 0' }}>
       <h2 style={{
         color: T.gold, borderBottom: `1px solid ${T.border}`,
         paddingBottom: 8, marginBottom: 16, fontSize: '1em',

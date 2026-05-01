@@ -56,6 +56,7 @@ export default function App() {
 
   const handleReset = useCallback(() => setRuneMap({}), []);
 
+
   const { detectedSpells, highlightedIds } = useMemo(
     () => detectSpells(runeMap, allTriples, spellIndex),
     [runeMap]
@@ -80,7 +81,7 @@ export default function App() {
   }
 
   const header = (
-    <div style={{
+    <div className="print-header" style={{
       padding: '12px 16px 10px',
       borderBottom: `1px solid ${T.border}`,
       flexShrink: 0,
@@ -154,7 +155,7 @@ export default function App() {
 
   const plannerContent = (
     <>
-      <div style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, flexShrink: 0 }}>
+      <div className="print-triangle" style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, flexShrink: 0 }}>
         <TriangleGrid
           runeMap={runeMap}
           highlightedIds={highlightedIds}
