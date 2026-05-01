@@ -1,17 +1,10 @@
 import RuneBadges from './RuneBadges';
 import SpellStats from './SpellStats';
-
-const TYPE_COLORS = {
-  Divin:   '#d4a017',
-  Arcane:  '#9060d0',
-  Céleste: '#4aabdc',
-};
-
-function getTypeColor(type) {
-  return TYPE_COLORS[type] ?? '#8a7050';
-}
+import { useTheme } from '../context/ThemeContext';
 
 export default function SpellList({ detectedSpells, onSpellHover }) {
+  const { T } = useTheme();
+
   const grouped = [];
   const countMap = new Map();
   for (const entry of detectedSpells) {
@@ -26,10 +19,14 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
     }
   }
 
+  function typeColor(type) {
+    return { Divin: T.divin, Arcane: T.arcane, Céleste: T.celeste }[type] ?? T.fallbackType;
+  }
+
   return (
     <div style={{ padding: '12px 0' }}>
       <h2 style={{
-        color: '#c9a020', borderBottom: '1px solid #4a3510',
+        color: T.gold, borderBottom: `1px solid ${T.border}`,
         paddingBottom: 8, marginBottom: 16, fontSize: '1em',
         fontFamily: "'Cinzel', serif", letterSpacing: '0.05em',
       }}>
@@ -37,13 +34,13 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
       </h2>
 
       {grouped.length === 0 && (
-        <p style={{ color: '#5a4828', fontStyle: 'italic', fontSize: 13 }}>
+        <p style={{ color: T.textDim, fontStyle: 'italic', fontSize: 13 }}>
           Aucun sort détecté — placez des runes sur 3 triangles adjacents.
         </p>
       )}
 
       {grouped.map(({ spell, triples, count }) => {
-        const color = getTypeColor(spell.type);
+        const color = typeColor(spell.type);
         return (
           <div
             key={spell.nom}
@@ -52,8 +49,8 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
             onMouseLeave={() => onSpellHover(null)}
             style={{
               padding: '10px 14px', marginBottom: 8,
-              background: '#1c1508', borderRadius: 4,
-              border: '1px solid #3a2a10', borderLeftWidth: 3, borderLeftColor: color,
+              background: T.bgCard, borderRadius: 4,
+              border: `1px solid ${T.border}`, borderLeftWidth: 3, borderLeftColor: color,
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -66,7 +63,7 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
                     ×{count}
                   </span>
                 )}
-                <strong style={{ color: '#e8d5a0', fontSize: 14, fontFamily: "'Cinzel', serif" }}>{spell.nom}</strong>
+                <strong style={{ color: T.textPrimary, fontSize: 14, fontFamily: "'Cinzel', serif" }}>{spell.nom}</strong>
               </div>
               <span style={{ color, fontSize: 11, fontWeight: 'bold', fontStyle: 'italic' }}>{spell.type}</span>
             </div>
@@ -74,13 +71,13 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
               <RuneBadges runes={spell.runes} />
             </div>
             {spell.description && (
-              <div style={{ color: '#a89070', fontSize: 12, marginTop: 5, lineHeight: 1.5, fontStyle: 'italic' }}>
+              <div style={{ color: T.textMuted, fontSize: 12, marginTop: 5, lineHeight: 1.5, fontStyle: 'italic' }}>
                 {spell.description}
               </div>
             )}
             <SpellStats spell={spell} />
             {spell.amelioration && (
-              <div style={{ marginTop: 5, fontSize: 11, color: '#c9a020' }}>✦ Amélioration</div>
+              <div style={{ marginTop: 5, fontSize: 11, color: T.gold }}>✦ Amélioration</div>
             )}
           </div>
         );

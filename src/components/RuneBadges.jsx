@@ -1,14 +1,15 @@
-// Colors match rune categories: composant, manifestation, effet
-const RUNE_CATEGORY_COLORS = ['#6aabcf', '#5ab880', '#c9a020'];
+import { useTheme } from '../context/ThemeContext';
 
 export default function RuneBadges({ runes, size = 'md' }) {
+  const { T } = useTheme();
   const fontSize = size === 'sm' ? 10 : 12;
   const padding  = size === 'sm' ? '2px 6px' : '3px 9px';
+  const colorKeys = ['composant', 'manifestation', 'effet'];
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 4, flexWrap: 'wrap' }}>
       {runes.map((rune, i) => {
-        const color = RUNE_CATEGORY_COLORS[i] ?? '#8a7050';
+        const color = T[colorKeys[i]] ?? T.fallbackType;
         return (
           <span
             key={i}

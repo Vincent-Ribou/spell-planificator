@@ -5,7 +5,7 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: dark;
+  color-scheme: light dark;
   color: #e8d5a0;
   background-color: #0f0b06;
 
@@ -80,6 +80,17 @@ button:focus-visible {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #8a6820;
+}
+
+[data-theme="light"] ::-webkit-scrollbar-track {
+  background: #ede0c0;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb {
+  background: #a08030;
+  border-radius: 3px;
+}
+[data-theme="light"] ::-webkit-scrollbar-thumb:hover {
+  background: #7a5800;
 }
 
 @media print {

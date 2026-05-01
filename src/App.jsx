@@ -9,8 +9,8 @@ import SpellList from './components/SpellList';
 import SpellBook from './components/SpellBook';
 import StatsModal from './components/StatsModal';
 import { useStats } from './context/StatsContext';
+import { useTheme } from './context/ThemeContext';
 
-// Stable precomputations — built once, never change
 const adjMap = buildAdjacencyMap();
 const allTriples = computeAllConnectedTriples(adjMap);
 const spellIndex = buildSpellIndex(spells);
@@ -34,6 +34,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('planner');
   const [showStats, setShowStats] = useState(false);
   const { stats } = useStats();
+  const { T, isDark, toggle } = useTheme();
   const debounceRef = useRef(null);
   const isMobile = useIsMobile();
 
@@ -81,42 +82,52 @@ export default function App() {
   const header = (
     <div style={{
       padding: '12px 16px 10px',
-      borderBottom: '1px solid #4a3510',
+      borderBottom: `1px solid ${T.border}`,
       flexShrink: 0,
-      background: '#130f08',
+      background: T.bgPanel,
     }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
         <h1 style={{
-          fontSize: '1.1em',
-          margin: 0,
-          color: '#c9a020',
-          fontFamily: "'Cinzel', serif",
-          letterSpacing: '0.04em',
-          textShadow: '0 0 20px rgba(201,160,32,0.3)',
+          fontSize: '1.1em', margin: 0, color: T.gold,
+          fontFamily: "'Cinzel', serif", letterSpacing: '0.04em',
+          textShadow: isDark ? '0 0 20px rgba(201,160,32,0.3)' : 'none',
         }}>
           ✦ Planificateur de Sorts ✦
         </h1>
         <div className="no-print" style={{ display: 'flex', gap: 6 }}>
           <button
+            onClick={toggle}
+            title={isDark ? 'Passer au thème clair' : 'Passer au thème sombre'}
+            style={{
+              fontSize: 11, width: 28,
+              padding: '4px 0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: T.bgCard, border: `1px solid ${T.border}`,
+              borderRadius: 4, color: T.textMuted, cursor: 'pointer',
+              fontFamily: "'Lora', serif", lineHeight: 1, flexShrink: 0,
+            }}
+          >
+            {isDark ? '☀' : '☽'}
+          </button>
+          <button
             onClick={() => setShowStats(true)}
             style={{
               fontSize: 11, padding: '4px 10px',
-              background: '#1a1a08', border: '1px solid #5a8a30',
-              borderRadius: 4, color: '#8ac060', cursor: 'pointer',
+              background: T.greenBg, border: `1px solid ${T.greenBorder}`,
+              borderRadius: 4, color: T.greenText, cursor: 'pointer',
               position: 'relative', fontFamily: "'Lora', serif",
             }}
           >
             Statistiques
             {Object.values(stats).some(v => v > 0) && (
-              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: '#8ac060', borderRadius: '50%' }} />
+              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: T.greenText, borderRadius: '50%' }} />
             )}
           </button>
           <button
             onClick={handleCopyLink}
             style={{
               fontSize: 11, padding: '4px 10px',
-              background: '#1c1508', border: '1px solid #4a3510',
-              borderRadius: 4, color: '#b8a070', cursor: 'pointer',
+              background: T.bgCard, border: `1px solid ${T.border}`,
+              borderRadius: 4, color: T.textSecondary, cursor: 'pointer',
               fontFamily: "'Lora', serif",
             }}
           >
@@ -126,8 +137,8 @@ export default function App() {
             onClick={handleReset}
             style={{
               fontSize: 11, padding: '4px 10px',
-              background: '#1a0808', border: '1px solid #8a2020',
-              borderRadius: 4, color: '#d06060', cursor: 'pointer',
+              background: T.redBg, border: `1px solid ${T.redBorder}`,
+              borderRadius: 4, color: T.redText, cursor: 'pointer',
               fontFamily: "'Lora', serif",
             }}
           >
@@ -135,7 +146,7 @@ export default function App() {
           </button>
         </div>
       </div>
-      <p className="no-print" style={{ color: '#5a4828', fontSize: 11, margin: 0, fontStyle: 'italic' }}>
+      <p className="no-print" style={{ color: T.textDim, fontSize: 11, margin: 0, fontStyle: 'italic' }}>
         Cliquez sur un triangle pour y placer une rune.
       </p>
     </div>
@@ -143,7 +154,7 @@ export default function App() {
 
   const plannerContent = (
     <>
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid #4a3510', flexShrink: 0 }}>
+      <div style={{ padding: '12px 16px', borderBottom: `1px solid ${T.border}`, flexShrink: 0 }}>
         <TriangleGrid
           runeMap={runeMap}
           highlightedIds={highlightedIds}
@@ -159,11 +170,11 @@ export default function App() {
 
   if (isMobile) {
     return (
-      <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#0f0b06' }}>
+      <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: T.bgPage }}>
         {header}
         <div className="no-print" style={{
-          display: 'flex', borderBottom: '1px solid #4a3510',
-          flexShrink: 0, background: '#130f08',
+          display: 'flex', borderBottom: `1px solid ${T.border}`,
+          flexShrink: 0, background: T.bgPanel,
         }}>
           {[
             { key: 'planner', label: 'Planificateur' },
@@ -175,8 +186,8 @@ export default function App() {
               style={{
                 flex: 1, padding: '10px 0',
                 background: 'none', border: 'none',
-                borderBottom: activeTab === key ? '2px solid #c9a020' : '2px solid transparent',
-                color: activeTab === key ? '#c9a020' : '#5a4828',
+                borderBottom: activeTab === key ? `2px solid ${T.tabActiveBorder}` : '2px solid transparent',
+                color: activeTab === key ? T.tabActiveColor : T.tabInactiveColor,
                 fontSize: 13, fontWeight: activeTab === key ? 'bold' : 'normal',
                 cursor: 'pointer', borderRadius: 0,
                 fontFamily: "'Cinzel', serif", letterSpacing: '0.03em',
@@ -185,7 +196,7 @@ export default function App() {
               {label}
               {key === 'planner' && detectedSpells.length > 0 && (
                 <span style={{
-                  marginLeft: 6, background: '#c9a020', color: '#0f0b06',
+                  marginLeft: 6, background: T.tabBadgeBg, color: T.tabBadgeText,
                   fontSize: 10, fontWeight: 'bold', borderRadius: 10, padding: '1px 5px',
                 }}>
                   {detectedSpells.length}
@@ -214,17 +225,17 @@ export default function App() {
   }
 
   return (
-    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#0f0b06' }}>
+    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: T.bgPage }}>
       <div className="print-panel" style={{
         flex: '0 0 540px', display: 'flex', flexDirection: 'column',
-        borderRight: '1px solid #4a3510', overflow: 'hidden', background: '#0f0b06',
+        borderRight: `1px solid ${T.border}`, overflow: 'hidden', background: T.bgPage,
       }}>
         {header}
         {plannerContent}
       </div>
       <div className="no-print" style={{
         flex: 1, display: 'flex', flexDirection: 'column',
-        padding: '20px', overflow: 'hidden', minWidth: 0, background: '#0f0b06',
+        padding: '20px', overflow: 'hidden', minWidth: 0, background: T.bgPage,
       }}>
         <SpellBook />
       </div>
