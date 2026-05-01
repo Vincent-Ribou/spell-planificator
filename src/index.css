@@ -73,6 +73,12 @@ button:focus-visible {
     display: none !important;
   }
 
+  .app-root {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
   .print-panel {
     flex: none !important;
     width: 100% !important;
@@ -92,6 +98,8 @@ button:focus-visible {
     background: #fff !important;
     border-color: #999 !important;
     box-shadow: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .print-panel .spell-card * {

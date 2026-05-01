@@ -132,7 +132,7 @@ export default function App() {
 
   if (isMobile) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
         {header}
 
         {/* Tab bar */}
@@ -203,7 +203,7 @@ export default function App() {
 
   // Desktop layout
   return (
-    <div style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
+    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
 
       {/* Left panel */}
       <div className="print-panel" style={{
