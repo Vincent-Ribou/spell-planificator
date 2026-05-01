@@ -2,17 +2,16 @@ import RuneBadges from './RuneBadges';
 import SpellStats from './SpellStats';
 
 const TYPE_COLORS = {
-  Divin:   '#f0c040',
-  Arcane:  '#a070f0',
-  Céleste: '#60c8f0',
+  Divin:   '#d4a017',
+  Arcane:  '#9060d0',
+  Céleste: '#4aabdc',
 };
 
 function getTypeColor(type) {
-  return TYPE_COLORS[type] ?? '#aaaaaa';
+  return TYPE_COLORS[type] ?? '#8a7050';
 }
 
 export default function SpellList({ detectedSpells, onSpellHover }) {
-  // Deduplicate by spell name, collecting all triples and counting occurrences
   const grouped = [];
   const countMap = new Map();
   for (const entry of detectedSpells) {
@@ -29,12 +28,16 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
 
   return (
     <div style={{ padding: '12px 0' }}>
-      <h2 style={{ color: '#ccc', borderBottom: '1px solid #444', paddingBottom: 8, marginBottom: 16, fontSize: '1.1em' }}>
+      <h2 style={{
+        color: '#c9a020', borderBottom: '1px solid #4a3510',
+        paddingBottom: 8, marginBottom: 16, fontSize: '1em',
+        fontFamily: "'Cinzel', serif", letterSpacing: '0.05em',
+      }}>
         Sorts détectés ({grouped.length})
       </h2>
 
       {grouped.length === 0 && (
-        <p style={{ color: '#666', fontStyle: 'italic' }}>
+        <p style={{ color: '#5a4828', fontStyle: 'italic', fontSize: 13 }}>
           Aucun sort détecté — placez des runes sur 3 triangles adjacents.
         </p>
       )}
@@ -48,43 +51,36 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
             onMouseEnter={() => onSpellHover(triples.flat())}
             onMouseLeave={() => onSpellHover(null)}
             style={{
-              padding: '10px 14px',
-              marginBottom: 8,
-              background: '#1e1e2e',
-              borderRadius: 6,
-              borderLeft: `4px solid ${color}`,
+              padding: '10px 14px', marginBottom: 8,
+              background: '#1c1508', borderRadius: 4,
+              border: '1px solid #3a2a10', borderLeftWidth: 3, borderLeftColor: color,
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 {count > 1 && (
                   <span style={{
-                    background: color + '33',
-                    border: `1px solid ${color}`,
-                    color,
-                    fontSize: 11,
-                    fontWeight: 'bold',
-                    borderRadius: 4,
-                    padding: '1px 6px',
+                    background: color + '22', border: `1px solid ${color}`,
+                    color, fontSize: 11, fontWeight: 'bold', borderRadius: 3, padding: '1px 6px',
                   }}>
                     ×{count}
                   </span>
                 )}
-                <strong style={{ color: '#eee', fontSize: 14 }}>{spell.nom}</strong>
+                <strong style={{ color: '#e8d5a0', fontSize: 14, fontFamily: "'Cinzel', serif" }}>{spell.nom}</strong>
               </div>
-              <span style={{ color, fontSize: 11, fontWeight: 'bold' }}>{spell.type}</span>
+              <span style={{ color, fontSize: 11, fontWeight: 'bold', fontStyle: 'italic' }}>{spell.type}</span>
             </div>
             <div style={{ marginTop: 6 }}>
               <RuneBadges runes={spell.runes} />
             </div>
             {spell.description && (
-              <div style={{ color: '#bbb', fontSize: 12, marginTop: 5, lineHeight: 1.4 }}>
+              <div style={{ color: '#a89070', fontSize: 12, marginTop: 5, lineHeight: 1.5, fontStyle: 'italic' }}>
                 {spell.description}
               </div>
             )}
             <SpellStats spell={spell} />
             {spell.amelioration && (
-              <div style={{ marginTop: 5, fontSize: 11, color: '#f0c040' }}>★ Amélioration</div>
+              <div style={{ marginTop: 5, fontSize: 11, color: '#c9a020' }}>✦ Amélioration</div>
             )}
           </div>
         );

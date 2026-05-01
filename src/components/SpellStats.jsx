@@ -12,9 +12,9 @@ export default function SpellStats({ spell, size = 'md' }) {
     if (!value || value === 'N/A') return null;
     return (
       <div style={{ display: 'flex', flexDirection: 'column' }}>
-        <span style={{ color: '#888', fontSize }}>{icon} {value}</span>
+        <span style={{ color: '#7a6040', fontSize }}>{icon} {value}</span>
         {formula && (
-          <span style={{ color: '#555', fontSize: formulaSize, marginTop: 1 }}>{formula}</span>
+          <span style={{ color: '#4a3510', fontSize: formulaSize, marginTop: 1, fontStyle: 'italic' }}>{formula}</span>
         )}
       </div>
     );
@@ -26,7 +26,7 @@ export default function SpellStats({ spell, size = 'md' }) {
       <StatItem icon="📏" field={resolved.portee} />
       <StatItem icon="⏱" field={resolved.duree} />
       {spell.region && (
-        <span style={{ color: '#888', fontSize }}>🎯 {spell.region}</span>
+        <span style={{ color: '#7a6040', fontSize }}>🎯 {spell.region}</span>
       )}
     </div>
   );

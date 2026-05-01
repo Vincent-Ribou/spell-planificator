@@ -31,7 +31,7 @@ export default function App() {
   const [selectorState, setSelectorState] = useState(null);
   const [hoveredIds, setHoveredIds] = useState(null);
   const [copyLabel, setCopyLabel] = useState('Copier le lien');
-  const [activeTab, setActiveTab] = useState('planner'); // 'planner' | 'grimoire'
+  const [activeTab, setActiveTab] = useState('planner');
   const [showStats, setShowStats] = useState(false);
   const { stats } = useStats();
   const debounceRef = useRef(null);
@@ -78,45 +78,72 @@ export default function App() {
     setSelectorState(null);
   }
 
-  // Shared header used in both layouts
   const header = (
-    <div style={{ padding: '12px 16px 10px', borderBottom: '1px solid #333', flexShrink: 0 }}>
+    <div style={{
+      padding: '12px 16px 10px',
+      borderBottom: '1px solid #4a3510',
+      flexShrink: 0,
+      background: '#130f08',
+    }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
-        <h1 style={{ fontSize: '1.2em', margin: 0, color: '#eee' }}>Planificateur de Sorts</h1>
+        <h1 style={{
+          fontSize: '1.1em',
+          margin: 0,
+          color: '#c9a020',
+          fontFamily: "'Cinzel', serif",
+          letterSpacing: '0.04em',
+          textShadow: '0 0 20px rgba(201,160,32,0.3)',
+        }}>
+          ✦ Planificateur de Sorts ✦
+        </h1>
         <div className="no-print" style={{ display: 'flex', gap: 6 }}>
           <button
             onClick={() => setShowStats(true)}
-            style={{ fontSize: 11, padding: '4px 10px', background: '#2a3a2e', border: '1px solid #4a6a4e', borderRadius: 5, color: '#6dd9a0', cursor: 'pointer', position: 'relative' }}
+            style={{
+              fontSize: 11, padding: '4px 10px',
+              background: '#1a1a08', border: '1px solid #5a8a30',
+              borderRadius: 4, color: '#8ac060', cursor: 'pointer',
+              position: 'relative', fontFamily: "'Lora', serif",
+            }}
           >
             Statistiques
             {Object.values(stats).some(v => v > 0) && (
-              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: '#6dd9a0', borderRadius: '50%' }} />
+              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: '#8ac060', borderRadius: '50%' }} />
             )}
           </button>
           <button
             onClick={handleCopyLink}
-            style={{ fontSize: 11, padding: '4px 10px', background: '#2a2a3e', border: '1px solid #555', borderRadius: 5, color: '#ccc', cursor: 'pointer' }}
+            style={{
+              fontSize: 11, padding: '4px 10px',
+              background: '#1c1508', border: '1px solid #4a3510',
+              borderRadius: 4, color: '#b8a070', cursor: 'pointer',
+              fontFamily: "'Lora', serif",
+            }}
           >
             {copyLabel}
           </button>
           <button
             onClick={handleReset}
-            style={{ fontSize: 11, padding: '4px 10px', background: '#3a1f1f', border: '1px solid #7a3a3a', borderRadius: 5, color: '#f08080', cursor: 'pointer' }}
+            style={{
+              fontSize: 11, padding: '4px 10px',
+              background: '#1a0808', border: '1px solid #8a2020',
+              borderRadius: 4, color: '#d06060', cursor: 'pointer',
+              fontFamily: "'Lora', serif",
+            }}
           >
             Réinitialiser
           </button>
         </div>
       </div>
-      <p className="no-print" style={{ color: '#888', fontSize: 11, margin: 0 }}>
+      <p className="no-print" style={{ color: '#5a4828', fontSize: 11, margin: 0, fontStyle: 'italic' }}>
         Cliquez sur un triangle pour y placer une rune.
       </p>
     </div>
   );
 
-  // Shared planner content (triangle + spell list)
   const plannerContent = (
     <>
-      <div style={{ padding: '12px 16px', borderBottom: '1px solid #333', flexShrink: 0 }}>
+      <div style={{ padding: '12px 16px', borderBottom: '1px solid #4a3510', flexShrink: 0 }}>
         <TriangleGrid
           runeMap={runeMap}
           highlightedIds={highlightedIds}
@@ -132,15 +159,11 @@ export default function App() {
 
   if (isMobile) {
     return (
-      <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: '#0f0b06' }}>
         {header}
-
-        {/* Tab bar */}
         <div className="no-print" style={{
-          display: 'flex',
-          borderBottom: '1px solid #333',
-          flexShrink: 0,
-          background: '#1a1a2e',
+          display: 'flex', borderBottom: '1px solid #4a3510',
+          flexShrink: 0, background: '#130f08',
         }}>
           {[
             { key: 'planner', label: 'Planificateur' },
@@ -150,28 +173,20 @@ export default function App() {
               key={key}
               onClick={() => setActiveTab(key)}
               style={{
-                flex: 1,
-                padding: '10px 0',
-                background: 'none',
-                border: 'none',
-                borderBottom: activeTab === key ? '2px solid #7ec8e3' : '2px solid transparent',
-                color: activeTab === key ? '#7ec8e3' : '#888',
-                fontSize: 13,
-                fontWeight: activeTab === key ? 'bold' : 'normal',
-                cursor: 'pointer',
-                borderRadius: 0,
+                flex: 1, padding: '10px 0',
+                background: 'none', border: 'none',
+                borderBottom: activeTab === key ? '2px solid #c9a020' : '2px solid transparent',
+                color: activeTab === key ? '#c9a020' : '#5a4828',
+                fontSize: 13, fontWeight: activeTab === key ? 'bold' : 'normal',
+                cursor: 'pointer', borderRadius: 0,
+                fontFamily: "'Cinzel', serif", letterSpacing: '0.03em',
               }}
             >
               {label}
               {key === 'planner' && detectedSpells.length > 0 && (
                 <span style={{
-                  marginLeft: 6,
-                  background: '#7ec8e3',
-                  color: '#111',
-                  fontSize: 10,
-                  fontWeight: 'bold',
-                  borderRadius: 10,
-                  padding: '1px 5px',
+                  marginLeft: 6, background: '#c9a020', color: '#0f0b06',
+                  fontSize: 10, fontWeight: 'bold', borderRadius: 10, padding: '1px 5px',
                 }}>
                   {detectedSpells.length}
                 </span>
@@ -179,8 +194,6 @@ export default function App() {
             </button>
           ))}
         </div>
-
-        {/* Tab content */}
         <div className="print-panel" style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}>
           {activeTab === 'planner' ? plannerContent : (
             <div style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '12px 16px', overflow: 'hidden', minWidth: 0 }}>
@@ -188,7 +201,6 @@ export default function App() {
             </div>
           )}
         </div>
-
         <RuneSelector
           triangleId={selectorState?.triangleId ?? null}
           position={{ x: selectorState?.x ?? 0, y: selectorState?.y ?? 0 }}
@@ -201,27 +213,21 @@ export default function App() {
     );
   }
 
-  // Desktop layout
   return (
-    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden' }}>
-
-      {/* Left panel */}
+    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: '#0f0b06' }}>
       <div className="print-panel" style={{
-        flex: '0 0 540px',
-        display: 'flex',
-        flexDirection: 'column',
-        borderRight: '1px solid #333',
-        overflow: 'hidden',
+        flex: '0 0 540px', display: 'flex', flexDirection: 'column',
+        borderRight: '1px solid #4a3510', overflow: 'hidden', background: '#0f0b06',
       }}>
         {header}
         {plannerContent}
       </div>
-
-      {/* Right panel */}
-      <div className="no-print" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '20px', overflow: 'hidden', minWidth: 0 }}>
+      <div className="no-print" style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        padding: '20px', overflow: 'hidden', minWidth: 0, background: '#0f0b06',
+      }}>
         <SpellBook />
       </div>
-
       <RuneSelector
         triangleId={selectorState?.triangleId ?? null}
         position={{ x: selectorState?.x ?? 0, y: selectorState?.y ?? 0 }}

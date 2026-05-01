@@ -1,11 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap');
+
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Lora', Georgia, serif;
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  color-scheme: dark;
+  color: #e8d5a0;
+  background-color: #0f0b06;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -15,22 +17,27 @@
 
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #c9a020;
   text-decoration: inherit;
 }
 a:hover {
-  color: #535bf2;
+  color: #e8c040;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background-color: #0f0b06;
 }
 
 #root {
   width: 100%;
   height: 100vh;
+}
+
+h1, h2, h3 {
+  font-family: 'Cinzel', serif;
 }
 
 h1 {
@@ -39,22 +46,40 @@ h1 {
 }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
+  border-radius: 4px;
+  border: 1px solid #4a3510;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  font-family: 'Lora', Georgia, serif;
+  background-color: #1c1508;
+  color: #e8d5a0;
   cursor: pointer;
-  transition: border-color 0.25s;
+  transition: border-color 0.2s, background 0.2s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #c9a020;
+  background-color: #241a08;
 }
 button:focus,
 button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+  outline: 2px solid #c9a02066;
+  outline-offset: 1px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #130f08;
+}
+::-webkit-scrollbar-thumb {
+  background: #4a3510;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8a6820;
 }
 
 @media print {
@@ -67,6 +92,7 @@ button:focus-visible {
     height: auto;
     background-color: #fff;
     color: #111;
+    font-family: Georgia, serif;
   }
 
   .no-print {
@@ -93,7 +119,6 @@ button:focus-visible {
     flex: none !important;
   }
 
-  /* White background + black text for all spell cards */
   .print-panel .spell-card {
     background: #fff !important;
     border-color: #999 !important;
@@ -107,18 +132,5 @@ button:focus-visible {
     color: #111 !important;
     border-color: #aaa !important;
     box-shadow: none !important;
-  }
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
   }
 }

@@ -2,17 +2,16 @@ import { useMemo } from 'react';
 import { W, H, getVertices, getCentroid, getAllTriangleIds } from '../utils/triangleGrid';
 import { runes } from '../data/spells';
 
-// Pre-build a color map for each rune (stable, index-based)
 const RUNE_COLORS = Object.fromEntries(
-  runes.map((rune, i) => [rune, `hsl(${Math.round(i * 360 / runes.length)}, 65%, 55%)`])
+  runes.map((rune, i) => [rune, `hsl(${Math.round(i * 360 / runes.length)}, 55%, 48%)`])
 );
 
 function getTriangleFill(id, runeMap, highlightedIds, hoveredIds) {
-  if (hoveredIds?.has(id)) return 'hsl(195, 90%, 60%)';
-  if (highlightedIds.has(id)) return 'hsl(45, 90%, 55%)';
+  if (hoveredIds?.has(id)) return 'hsl(200, 65%, 38%)';
+  if (highlightedIds.has(id)) return 'hsl(42, 90%, 58%)';
   const rune = runeMap[id];
-  if (rune) return RUNE_COLORS[rune] ?? '#aaa';
-  return '#e8e8e8';
+  if (rune) return RUNE_COLORS[rune] ?? '#6a5020';
+  return '#2a1e0c';
 }
 
 export default function TriangleGrid({ runeMap, highlightedIds, hoveredIds, onTriangleClick }) {
@@ -45,7 +44,7 @@ export default function TriangleGrid({ runeMap, highlightedIds, hoveredIds, onTr
             <polygon
               points={points}
               fill={fill}
-              stroke={isHovered ? '#0090b0' : isHighlighted ? '#c07000' : '#666'}
+              stroke={isHovered ? '#0a4060' : isHighlighted ? '#7a5200' : '#6a4e20'}
               strokeWidth={isHovered || isHighlighted ? 2 : 1}
             />
             {rune && (
@@ -56,7 +55,7 @@ export default function TriangleGrid({ runeMap, highlightedIds, hoveredIds, onTr
                 dominantBaseline="middle"
                 fontSize={8}
                 fontWeight="bold"
-                fill={isHovered ? '#003040' : isHighlighted ? '#3a1f00' : '#111'}
+                fill={isHovered ? '#e8f4ff' : isHighlighted ? '#1a0e00' : '#e8d5a0'}
                 style={{ pointerEvents: 'none', userSelect: 'none' }}
               >
                 {rune}
