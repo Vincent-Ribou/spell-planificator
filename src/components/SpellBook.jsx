@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import RuneBadges from './RuneBadges';
 import SpellStats from './SpellStats';
+import RoughBox from './RoughBox';
 import { spells } from '../data/spells';
 import { useTheme } from '../context/ThemeContext';
 
@@ -133,12 +134,11 @@ export default function SpellBook() {
         {filtered.map((spell) => {
           const color = typeColor(spell.type);
           return (
-            <div
+            <RoughBox
               key={spell.nom}
               style={{
-                padding: '9px 12px', marginBottom: 6,
-                background: T.bgCard, borderRadius: 4,
-                border: `1px solid ${T.border}`, borderLeft: `3px solid ${color}`,
+                padding: '14px 15px', marginBottom: 6,
+                background: T.bgCard,
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8 }}>
@@ -157,7 +157,7 @@ export default function SpellBook() {
               {spell.amelioration && (
                 <div style={{ marginTop: 4, fontSize: 10, color: T.gold }}>✦ Amélioration</div>
               )}
-            </div>
+            </RoughBox>
           );
         })}
       </div>

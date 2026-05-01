@@ -67,6 +67,16 @@ button:focus-visible {
   outline-offset: 1px;
 }
 
+/* Theme-aware rough border color */
+:root {
+  --medieval-border: #8a6820;
+}
+[data-theme="light"] {
+  --medieval-border: #7a5800;
+}
+
+/* Torn-paper border is handled by the RoughBox React component (RoughBox.jsx) */
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;

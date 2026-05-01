@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useTheme } from '../context/ThemeContext';
+import RoughBox from './RoughBox';
 
 const RUNE_SECTIONS = [
   {
@@ -47,13 +48,12 @@ export default function RuneSelector({ triangleId, position, onSelect, onClear, 
   const top  = Math.min(position.y + 8, window.innerHeight - 500);
 
   return (
-    <div
+    <RoughBox
       ref={panelRef}
       style={{
         position: 'fixed', left, top: Math.max(8, top), zIndex: 1000,
-        background: T.bgCard, border: `1px solid ${T.borderAccent}`,
-        borderRadius: 6, padding: 12, width: PANEL_W,
-        boxShadow: '0 4px 24px rgba(0,0,0,0.4)',
+        background: T.bgCard,
+        padding: 16, width: PANEL_W,
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
@@ -118,6 +118,6 @@ export default function RuneSelector({ triangleId, position, onSelect, onClear, 
       >
         Effacer la rune
       </button>
-    </div>
+    </RoughBox>
   );
 }

@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useStats, DEFAULT_STATS } from '../context/StatsContext';
 import { useTheme } from '../context/ThemeContext';
+import RoughBox from './RoughBox';
 
 const STATS_CONFIG = [
   { key: 'introspection', label: 'Introspection',  description: 'Utilisé pour certains sorts Célestes' },
@@ -47,12 +48,10 @@ export default function StatsModal({ onClose }) {
         padding: 16,
       }}
     >
-      <div style={{
+      <RoughBox style={{
         background: T.bgCard,
-        border: `1px solid ${T.borderAccent}`,
-        borderRadius: 6, padding: 24,
+        padding: 24,
         width: '100%', maxWidth: 380,
-        boxShadow: '0 8px 40px rgba(0,0,0,0.5)',
       }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 20 }}>
           <h2 style={{ margin: 0, fontSize: '1em', color: T.gold, fontFamily: "'Cinzel', serif", letterSpacing: '0.05em' }}>
@@ -110,7 +109,7 @@ export default function StatsModal({ onClose }) {
             Sauvegarder
           </button>
         </div>
-      </div>
+      </RoughBox>
     </div>
   );
 }

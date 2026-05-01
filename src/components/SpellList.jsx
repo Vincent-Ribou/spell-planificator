@@ -1,5 +1,6 @@
 import RuneBadges from './RuneBadges';
 import SpellStats from './SpellStats';
+import RoughBox from './RoughBox';
 import { useTheme } from '../context/ThemeContext';
 
 export default function SpellList({ detectedSpells, onSpellHover }) {
@@ -42,15 +43,14 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
       {grouped.map(({ spell, triples, count }) => {
         const color = typeColor(spell.type);
         return (
-          <div
+          <RoughBox
             key={spell.nom}
             className="spell-card"
             onMouseEnter={() => onSpellHover(triples.flat())}
             onMouseLeave={() => onSpellHover(null)}
             style={{
-              padding: '10px 14px', marginBottom: 8,
-              background: T.bgCard, borderRadius: 4,
-              border: `1px solid ${T.border}`, borderLeftWidth: 3, borderLeftColor: color,
+              padding: '15px 16px', marginBottom: 8,
+              background: T.bgCard,
             }}
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -79,7 +79,7 @@ export default function SpellList({ detectedSpells, onSpellHover }) {
             {spell.amelioration && (
               <div style={{ marginTop: 5, fontSize: 11, color: T.gold }}>✦ Amélioration</div>
             )}
-          </div>
+          </RoughBox>
         );
       })}
     </div>
