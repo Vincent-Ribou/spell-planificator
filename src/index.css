@@ -134,7 +134,7 @@ button:focus-visible {
     background: #fff !important;
     color: #111 !important;
     clip-path: none !important;
-    border: 1px solid #bbb !important;
+    border: none !important;
     break-inside: avoid !important;
     page-break-inside: avoid !important;
     margin-bottom: 8px !important;
@@ -143,20 +143,25 @@ button:focus-visible {
   .spell-card * {
     background: transparent !important;
     color: #111 !important;
-    border-color: #bbb !important;
   }
+
+  /* Stretch the torn-border SVG to the card's print dimensions */
+  .spell-card ~ svg[aria-hidden="true"] {
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  svg[aria-hidden="true"] path { stroke: #999 !important; }
 
   .print-spells > h2 {
     color: #111 !important;
     border-bottom: 1px solid #ccc !important;
     margin-bottom: 10px !important;
   }
-
-  svg[aria-hidden="true"] path { stroke: #999 !important; }
 }
 
-/* ── Portrait layout (browser dialog → Portrait) ─────────────────── */
-@media print and (orientation: portrait) {
+/* ── Portrait layout (default for print) ─────────────────────────── */
+@media print {
   .app-root {
     height: auto !important;
     overflow: visible !important;
@@ -164,7 +169,7 @@ button:focus-visible {
     display: block !important;
   }
 
-  .print-panel {
+  .print-main-row, .print-panel {
     display: block !important;
     width: 100% !important;
     overflow: visible !important;
@@ -192,46 +197,23 @@ button:focus-visible {
   }
 }
 
-/* ── Landscape layout (browser dialog → Paysage) ─────────────────── */
+/* ── Landscape layout — via button class or browser orientation ───── */
 @media print and (orientation: landscape) {
-  .app-root {
-    height: auto !important;
-    overflow: visible !important;
-    background: #fff !important;
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    grid-template-rows: auto 1fr !important;
-    align-items: start !important;
-    gap: 0 24px !important;
-  }
-
-  .print-panel  { display: contents !important; }
-  .print-header { grid-column: 1 / -1 !important; }
-
-  .print-triangle {
-    grid-column: 1 !important;
-    grid-row: 2 !important;
-    border-right: 1px solid #ddd !important;
-    padding: 0 20px 0 0 !important;
-  }
-
-  .print-scroll {
-    grid-column: 2 !important;
-    grid-row: 2 !important;
-    overflow: visible !important;
-    height: auto !important;
-    flex: none !important;
-    padding: 0 !important;
-  }
-
-  .print-spells {
-    column-count: 2 !important;
-    column-gap: 12px !important;
-    padding: 0 !important;
-  }
-
-  .print-spells > h2 {
-    column-span: all !important;
-    font-size: 0.85em !important;
-  }
+  .app-root { display: grid !important; grid-template-columns: 1fr 1fr !important; grid-template-rows: auto 1fr !important; align-items: start !important; gap: 0 24px !important; }
+  .print-main-row { display: contents !important; }
+  .print-panel    { display: contents !important; }
+  .print-header   { grid-column: 1 / -1 !important; }
+  .print-triangle { grid-column: 1 !important; grid-row: 2 !important; border-bottom: none !important; border-right: 1px solid #ddd !important; padding: 0 20px 0 0 !important; margin-bottom: 0 !important; }
+  .print-scroll   { grid-column: 2 !important; grid-row: 2 !important; }
+  .print-spells   { column-count: 2 !important; column-gap: 12px !important; }
+  .print-spells > h2 { column-span: all !important; font-size: 0.85em !important; }
 }
+
+html.force-print-landscape .app-root    { display: grid !important; grid-template-columns: 1fr 1fr !important; grid-template-rows: auto 1fr !important; align-items: start !important; gap: 0 24px !important; height: auto !important; overflow: visible !important; background: #fff !important; }
+html.force-print-landscape .print-main-row { display: contents !important; }
+html.force-print-landscape .print-panel    { display: contents !important; }
+html.force-print-landscape .print-header   { grid-column: 1 / -1 !important; }
+html.force-print-landscape .print-triangle { grid-column: 1 !important; grid-row: 2 !important; border-bottom: none !important; border-right: 1px solid #ddd !important; padding: 0 20px 0 0 !important; margin-bottom: 0 !important; }
+html.force-print-landscape .print-scroll   { grid-column: 2 !important; grid-row: 2 !important; overflow: visible !important; height: auto !important; flex: none !important; padding: 0 !important; }
+html.force-print-landscape .print-spells   { column-count: 2 !important; column-gap: 12px !important; padding: 0 !important; }
+html.force-print-landscape .print-spells > h2 { column-span: all !important; font-size: 0.85em !important; }

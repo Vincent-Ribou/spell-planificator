@@ -80,6 +80,22 @@ export default function App() {
     setSelectorState(null);
   }
 
+  const themeBtn = (
+    <button
+      onClick={toggle}
+      title={isDark ? 'Passer au thème clair' : 'Passer au thème sombre'}
+      style={{
+        fontSize: 11, width: 28,
+        padding: '4px 0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+        background: T.bgCard, border: `1px solid ${T.border}`,
+        borderRadius: 4, color: T.textMuted, cursor: 'pointer',
+        fontFamily: "'Lora', serif", lineHeight: 1, flexShrink: 0,
+      }}
+    >
+      {isDark ? '☀' : '☽'}
+    </button>
+  );
+
   const header = (
     <div className="print-header" style={{
       padding: '12px 16px 10px',
@@ -87,7 +103,7 @@ export default function App() {
       flexShrink: 0,
       background: T.bgPanel,
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 2 }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: isMobile ? 8 : 2 }}>
         <h1 style={{
           fontSize: '1.1em', margin: 0, color: T.gold,
           fontFamily: "'Cinzel', serif", letterSpacing: '0.04em',
@@ -96,19 +112,73 @@ export default function App() {
           ✦ Planificateur de Sorts ✦
         </h1>
         <div className="no-print" style={{ display: 'flex', gap: 6 }}>
+          {themeBtn}
+          {!isMobile && (
+            <>
           <button
-            onClick={toggle}
-            title={isDark ? 'Passer au thème clair' : 'Passer au thème sombre'}
+            onClick={() => setShowStats(true)}
             style={{
-              fontSize: 11, width: 28,
-              padding: '4px 0', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: T.bgCard, border: `1px solid ${T.border}`,
-              borderRadius: 4, color: T.textMuted, cursor: 'pointer',
-              fontFamily: "'Lora', serif", lineHeight: 1, flexShrink: 0,
+              fontSize: 11, padding: '4px 10px',
+              background: T.greenBg, border: `1px solid ${T.greenBorder}`,
+              borderRadius: 4, color: T.greenText, cursor: 'pointer',
+              position: 'relative', fontFamily: "'Lora', serif",
             }}
           >
-            {isDark ? '☀' : '☽'}
+            Statistiques
+            {Object.values(stats).some(v => v > 0) && (
+              <span style={{ position: 'absolute', top: -3, right: -3, width: 7, height: 7, background: T.greenText, borderRadius: '50%' }} />
+            )}
           </button>
+          <button
+            onClick={handleCopyLink}
+            style={{
+              fontSize: 11, padding: '4px 10px',
+              background: T.bgCard, border: `1px solid ${T.border}`,
+              borderRadius: 4, color: T.textSecondary, cursor: 'pointer',
+              fontFamily: "'Lora', serif",
+            }}
+          >
+            {copyLabel}
+          </button>
+          <button
+            onClick={handleReset}
+            style={{
+              fontSize: 11, padding: '4px 10px',
+              background: T.redBg, border: `1px solid ${T.redBorder}`,
+              borderRadius: 4, color: T.redText, cursor: 'pointer',
+              fontFamily: "'Lora', serif",
+            }}
+          >
+            Réinitialiser
+          </button>
+          {['portrait', 'landscape'].map((orientation) => (
+            <button
+              key={orientation}
+              onClick={() => {
+                const s = document.createElement('style');
+                s.textContent = `@page { size: ${orientation}; }`;
+                document.head.appendChild(s);
+                document.documentElement.classList.add(`force-print-${orientation}`);
+                window.print();
+                document.documentElement.classList.remove(`force-print-${orientation}`);
+                document.head.removeChild(s);
+              }}
+              style={{
+                fontSize: 11, padding: '4px 10px',
+                background: T.bgCard, border: `1px solid ${T.border}`,
+                borderRadius: 4, color: T.textSecondary, cursor: 'pointer',
+                fontFamily: "'Lora', serif",
+              }}
+            >
+              🖨 {orientation === 'portrait' ? 'Portrait' : 'Paysage'}
+            </button>
+          ))}
+            </>
+          )}
+        </div>
+      </div>
+      {isMobile && (
+        <div className="no-print" style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
           <button
             onClick={() => setShowStats(true)}
             style={{
@@ -146,8 +216,8 @@ export default function App() {
             Réinitialiser
           </button>
         </div>
-      </div>
-      <p className="no-print" style={{ color: T.textDim, fontSize: 11, margin: 0, fontStyle: 'italic' }}>
+      )}
+      <p className="no-print" style={{ color: T.textDim, fontSize: 11, margin: isMobile ? '6px 0 0' : 0, fontStyle: 'italic' }}>
         Cliquez sur un triangle pour y placer une rune.
       </p>
     </div>
@@ -226,19 +296,21 @@ export default function App() {
   }
 
   return (
-    <div className="app-root" style={{ display: 'flex', height: '100vh', overflow: 'hidden', background: T.bgPage }}>
-      <div className="print-panel" style={{
-        flex: '0 0 540px', display: 'flex', flexDirection: 'column',
-        borderRight: `1px solid ${T.border}`, overflow: 'hidden', background: T.bgPage,
-      }}>
-        {header}
-        {plannerContent}
-      </div>
-      <div className="no-print" style={{
-        flex: 1, display: 'flex', flexDirection: 'column',
-        padding: '20px', overflow: 'hidden', minWidth: 0, background: T.bgPage,
-      }}>
-        <SpellBook />
+    <div className="app-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden', background: T.bgPage }}>
+      {header}
+      <div className="print-main-row" style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        <div className="print-panel" style={{
+          flex: '0 0 540px', display: 'flex', flexDirection: 'column',
+          borderRight: `1px solid ${T.border}`, overflow: 'hidden', background: T.bgPage,
+        }}>
+          {plannerContent}
+        </div>
+        <div className="no-print" style={{
+          flex: 1, display: 'flex', flexDirection: 'column',
+          padding: '20px', overflow: 'hidden', minWidth: 0, background: T.bgPage,
+        }}>
+          <SpellBook />
+        </div>
       </div>
       <RuneSelector
         triangleId={selectorState?.triangleId ?? null}

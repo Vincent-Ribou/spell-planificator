@@ -82,9 +82,11 @@ const LAYOUT_KEYS = new Set([
   'float', 'clear', 'gridArea', 'gridColumn', 'gridRow',
 ]);
 
-const RoughBox = forwardRef(function RoughBox({ children, style = {}, className }, fwdRef) {
+const RoughBox = forwardRef(function RoughBox({ children, style = {}, className, ...events }, fwdRef) {
   const { T } = useTheme();
   const wrapRef = useRef(null);
+  const svgRef = useRef(null);
+  const pathRef = useRef(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
 
   useLayoutEffect(() => {
@@ -122,6 +124,7 @@ const RoughBox = forwardRef(function RoughBox({ children, style = {}, className 
         else if (fwdRef) fwdRef.current = el;
       }}
       style={wrapStyle}
+      {...events}
     >
       {/* Content: clip-path applied here so children are clipped */}
       <div style={{ ...contentStyle, clipPath: shape?.clipPath ?? 'none' }} className={className}>
@@ -131,7 +134,9 @@ const RoughBox = forwardRef(function RoughBox({ children, style = {}, className 
       {/* SVG border: sibling to clipped div so it is NOT clipped */}
       {shape && (
         <svg
+          ref={svgRef}
           aria-hidden="true"
+          preserveAspectRatio="none"
           style={{
             position: 'absolute', left: 0, top: 0,
             width: size.w, height: size.h,
@@ -140,6 +145,7 @@ const RoughBox = forwardRef(function RoughBox({ children, style = {}, className 
           viewBox={`0 0 ${size.w} ${size.h}`}
         >
           <path
+            ref={pathRef}
             d={shape.svgPath}
             stroke={T.borderAccent}
             strokeWidth="1.5"
